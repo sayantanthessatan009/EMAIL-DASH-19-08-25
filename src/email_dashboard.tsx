@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Mail, Shield, AlertTriangle, FileText, Clock, TrendingUp, Users, DollarSign, Activity, CheckCircle, XCircle, ArrowRight, Zap, Target, Globe, Database, Cpu, Eye, Star, Award, Bell, Filter, Search, Download, RefreshCw, BarChart3, BarChart as LucideBarChart, TrendingDown, AlertCircle, Calendar, MapPin } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, Tooltip, Legend, AreaChart, Area, RadialBarChart, RadialBar, ScatterChart, Scatter, ComposedChart } from 'recharts';
+import { useState, useEffect } from 'react';
+import { Mail, Shield, AlertTriangle, FileText, Clock, TrendingUp, DollarSign, Activity, CheckCircle, Zap, Target, Globe, Database, Cpu, Eye, Award, Bell, BarChart3, BarChart as LucideBarChart, AlertCircle, Calendar, MapPin } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, PieChart, Pie, Cell, Line, Tooltip, Legend, AreaChart, Area, RadialBarChart, RadialBar, ScatterChart, Scatter, ComposedChart } from 'recharts';
 
 const EmailDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
-  const [animatedValues, setAnimatedValues] = useState({});
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -14,22 +13,7 @@ const EmailDashboard = () => {
     return () => clearInterval(timer);
   }, []);
 
-  useEffect(() => {
-    // Animate counter values
-    const targets = { emails: 30, attachments: 6, tickets: 7, security: 3 };
-    Object.keys(targets).forEach(key => {
-      let current = 0;
-      const increment = targets[key] / 30;
-      const counter = setInterval(() => {
-        current += increment;
-        if (current >= targets[key]) {
-          current = targets[key];
-          clearInterval(counter);
-        }
-        setAnimatedValues(prev => ({ ...prev, [key]: Math.floor(current) }));
-      }, 50);
-    });
-  }, []);
+  // counters are handled by AnimatedCounter component
 
   // Source data from the daily email analysis report
   const emailCategories = [
@@ -101,13 +85,13 @@ const EmailDashboard = () => {
     { day: 'Sun', emails: 5, business: 1, support: 0, otp: 4 }
   ];
 
-  const AnimatedCounter = ({ target, duration = 2000, suffix = "" }) => {
+  const AnimatedCounter = ({ target, duration = 2000, suffix = "" }: { target: number | string; duration?: number; suffix?: string }) => {
     const [count, setCount] = useState(0);
-    
+
     useEffect(() => {
       let start = 0;
-      const end = parseInt(target);
-      const increment = end / (duration / 16);
+      const end = Number(target) || 0;
+      const increment = end / Math.max(1, Math.floor(duration / 16));
       const timer = setInterval(() => {
         start += increment;
         if (start >= end) {
@@ -298,7 +282,7 @@ const EmailDashboard = () => {
                   
                   <div>
                     <h3 className="text-3xl font-black text-purple-400 mb-6 flex items-center">
-                      <BarChart className="h-8 w-8 mr-3" />
+                      <LucideBarChart className="h-8 w-8 mr-3" />
                       EMAIL DISTRIBUTION VORTEX
                     </h3>
                     <ResponsiveContainer width="100%" height={300}>
