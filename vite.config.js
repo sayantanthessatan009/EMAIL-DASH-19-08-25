@@ -3,5 +3,5 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/',   // 👈 EXACT repo name
+  base: '/',   // ✅ Netlify serves from root, not repo folder
 })
